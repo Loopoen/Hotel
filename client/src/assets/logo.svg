@@ -1,0 +1,28 @@
+<svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <pattern id="pixelDots" width="15" height="15" patternUnits="userSpaceOnUse">
+    <rect width="2" height="2" fill="#D4AF37" fill-opacity="0.1"/>
+  </pattern>
+  <rect width="100%" height="100%" fill="url(#pixelDots)" />
+  
+  <g fill="#D4AF37">
+    <rect x="195" y="40" width="10" height="10" />
+    <rect x="180" y="50" width="10" height="10" />
+    <rect x="210" y="50" width="10" height="10" />
+    <rect x="170" y="60" width="60" height="10" />
+  </g>
+
+  <text x="50%" y="130" 
+        font-family="'Courier New', Courier, monospace" 
+        font-size="40" 
+        font-weight="900" 
+        fill="#D4AF37" 
+        text-anchor="middle" 
+        style="text-transform: uppercase; letter-spacing: 2px;">
+    Oanh's Hotel
+  </text>
+  
+  <path d="M100 150 H120 V155 H140 V150 H160 V155 H180 V150 H220 V155 H240 V150 H260 V155 H280 V150 H300" 
+        fill="none" 
+        stroke="#D4AF37" 
+        stroke-width="3" />
+</svg>
