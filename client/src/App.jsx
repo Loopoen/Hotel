@@ -6,6 +6,8 @@ import AllRooms from "./page/AllRooms"
 import Footer from "./component/Footer"
 import RoomDetal from "./component/RoomDetal"
 import MyBooking from "./page/MyBooking"
+import HotelRegistration from "./component/HotelRegistration"
+import Layout from "./page/hotelOwner/Layout"
 
 
 
@@ -18,6 +20,7 @@ function App() {
   return (
     <div>
       { !isOwnerPath && <Navbar/>}
+    { false && <HotelRegistration/>}
 
       <div className="min-h-[70vh]">
         <Routes>
@@ -27,6 +30,7 @@ function App() {
           <Route path="/rooms" element={<AllRooms/>} />
           <Route path="/rooms/:id" element={<RoomDetal/>} />
           <Route path="/my-bookings" element={<MyBooking/>} />
+          <Route path="/owner" element={<Layout/>} />
         </Routes>
 
       </div>
