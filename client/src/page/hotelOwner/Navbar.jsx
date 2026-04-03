@@ -7,8 +7,8 @@ import {UserButton} from "@clerk/clerk-react"
 const Navbar = () => {
   return (
     <div className='flex items-center justify-between px-4 md:px-8 border-b border-gray-300 py-3 bg-white transition-all duration-300'>
-        <Link>
-            <img src={Logo} className='h-9 invert opacity-80' />
+        <Link to={"/"}>
+            <img src={Logo} className='h-12 invert opacity-80' />
         </Link>
 
         <UserButton/>
