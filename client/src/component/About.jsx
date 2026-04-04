@@ -145,10 +145,6 @@ const About = () => {
           ></iframe>
         </div>
       </section>
-      
-      <footer>
-        <Footer/>
-      </footer>
 
     </div>
   );

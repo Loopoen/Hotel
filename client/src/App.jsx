@@ -11,6 +11,7 @@ import Layout from "./page/hotelOwner/Layout"
 import DashBoard from "./page/hotelOwner/DashBoard"
 import AddRoom from "./page/hotelOwner/AddRoom"
 import ListRoom from "./page/hotelOwner/ListRoom"
+import { Recomendation } from "./component/Recomendation"
 
 
 
@@ -33,6 +34,7 @@ function App() {
           <Route path="/rooms" element={<AllRooms/>} />
           <Route path="/rooms/:id" element={<RoomDetal/>} />
           <Route path="/my-bookings" element={<MyBooking/>} />
+          <Route path="/recomendation" element={<Recomendation/>}/>
           <Route path="/owner" element={<Layout/>} >
 
             <Route index element={<DashBoard/>}/>
