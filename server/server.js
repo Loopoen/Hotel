@@ -17,11 +17,13 @@ app.use(cors())
 app.use(clerkMiddleware())
 app.use(express.json())
 
+app.use("/api/clerk", clerkWebhooks)
+
 app.get("/", (req,res)=>{
     res.send("working")
 })
 
-app.use("/api/clerk", clerkWebhooks)
+
 
 const PORT = process.env.PORT || 5000
 
