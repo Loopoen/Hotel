@@ -17,7 +17,7 @@ app.use(cors())
 app.use(clerkMiddleware())
 app.use(express.json())
 
-app.use("/api/clerk", clerkMiddleware(), clerkWebhooks)
+app.use("/api/clerk", express.raw({ type: "application/json" }), clerkWebhooks)
 
 app.get("/", (req,res)=>{
     res.send("working")
