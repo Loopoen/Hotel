@@ -6,11 +6,13 @@ import ExclusiveOffers from '../component/ExclusiveOffers'
 import Testimonial from '../component/Testimonial'
 import Letter from '../component/Letter'
 import Footer from '../component/Footer'
+import MostHotel from '../component/MostHotel'
 
 const Home = () => {
   return (
     <>
         <Hero/>
+        <MostHotel/>
         <FeatureDestination/>
         <ExclusiveOffers/>
         <Testimonial />

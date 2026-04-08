@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { roomsDummyData } from './FeatureDestination'
 import StarRating from './StarRating'
@@ -8,6 +8,7 @@ import homeIcon from "../assets/home.svg"
 import badgeIcon from "../assets/badge-check.svg"
 import locationFilledIcon from "../assets/land-layer-location.svg"
 import heartIcon from "../assets/heart.svg"
+import { AppContext } from '../context/AppContext'
 
 
 export const roomCommonData = [
@@ -20,11 +21,12 @@ export const roomCommonData = [
 const RoomDetal = () => {
 
     const { id } = useParams()
+    const {roomData} = useContext(AppContext)
     const [room, setRoom] = useState(null)
     const [image, setImage] = useState(null)
 
     useEffect(() => {
-        const room = roomsDummyData.find(room => room._id === id)
+        const room = roomData.find(room => room._id === id)
         room && setRoom(room)
         room && setImage(room.images[0])
     }, [])
@@ -154,7 +156,7 @@ const RoomDetal = () => {
 
             <div className='flex flex-col itmes-center gap-4'>
                 <div>
-                    <img src={room.hotel.owner.image} alt="" className='w-14 h-14 md:h-18 md:w-18 rounded-full' />
+                  
 
                     <div>
                         <p className='text-lg md:text-xl'>Hosted by {room.hotel.name}</p>

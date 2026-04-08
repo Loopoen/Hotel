@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import roomImg1 from "../assets/roomImg1.jpeg"
 import roomImg2 from "../assets/roomImg2.jpg"
 import roomImg3 from "../assets/roomImg3.jpg"
@@ -6,6 +6,7 @@ import roomImg4 from "../assets/roomImg4.jpg"
 import Hotel from './Hotel'
 import Title from './Title'
 import { useNavigate } from 'react-router-dom'
+import { AppContext } from '../context/AppContext'
 
 
 export const userDummyData = {
@@ -90,7 +91,8 @@ export const roomsDummyData = [
 const FeatureDestination = () => {
 
 
-    const navigate = useNavigate()
+    const {navigate, roomData} = useContext(AppContext)
+    console.log(roomData)
 
   return (
     <div className='mt-4 flex flex-col items-center px-6 md:px-16 lg:px-24 bg-slate-50 py-20'>
@@ -100,7 +102,7 @@ const FeatureDestination = () => {
         <div className='flex flex-wrap items-center justify-center gap-6 mt-20'>
 
            
-            {roomsDummyData.slice(0, 4).map((room, index)=>{
+            {roomData.map((room, index)=>{
 
                 
                 return <Hotel room={room} index={index} key={room._id}/>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { roomsDummyData } from '../component/FeatureDestination'
 import { useNavigate } from 'react-router-dom'
 import StarRating from '../component/StarRating'
@@ -8,6 +8,7 @@ import freeBreakfastIcon from "../assets/noodles.svg"
 import roomServiceIcon from "../assets/room-service.svg"
 import mountainIcon from "../assets/mountains.svg"
 import poolIcon from "../assets/swimming-pool.svg"
+import { AppContext } from '../context/AppContext'
 
 
 
@@ -52,8 +53,9 @@ const RadioButton = ({label, selected = false, onChange = ()=>{ }})=>{
 }
 
 const AllRooms = () => {
-    const navigate = useNavigate()
+    
     const [openFilter ,setOpenFilter] = useState(false)
+    const {roomData, navigate} = useContext(AppContext)
 
     const roomType =[
         "Single Bed",
@@ -92,7 +94,7 @@ const AllRooms = () => {
                 </div>
 
                 {
-                    roomsDummyData.map((room) => (
+                    roomData.map((room) => (
                         <div className='flex flex-col md:flex-row items-start py-10 gap-6 border-b border-gray-200 last:pb-30 last:border-0'>
                             <img onClick={() => navigate(`/rooms/${room._id}`)} src={room.images[0]} className='w-85 h-40 rounded-2xl shadow-lg object-cover cursor-pointer' />
 

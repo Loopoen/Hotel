@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link} from "react-router-dom"
 import Logo from "../../assets/logo.svg"
-import {UserButton} from "@clerk/clerk-react"
+
 
 
 const Navbar = () => {
@@ -11,7 +11,7 @@ const Navbar = () => {
             <img src={Logo} className='h-12 invert opacity-80' />
         </Link>
 
-        <UserButton/>
+     
     </div>
   )
 }

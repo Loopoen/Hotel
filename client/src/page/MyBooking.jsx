@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Title from '../component/Title'
 import { hotelDummyData, roomsDummyData, userDummyData } from '../component/FeatureDestination'
 import locationIcon from "../assets/land-layer-location.svg"
 import guestIcon from "../assets/user.svg"
+import { AppContext } from '../context/AppContext'
 
 
 
@@ -60,8 +61,9 @@ export const userBookingsDummyData = [
 
 
 const MyBooking = () => {
+    const {booking} = useContext(AppContext)
+    console.log(booking)
 
-    const [bookings, setBookings] = useState(userBookingsDummyData)
     return (
         <div className='py-28 md:pt-32 px-4 md;px-16 lg:px-24 xl:px-32'>
             <Title title={"My Booking"} subTitle={"Hành trình của bạn, ưu tiên của chúng tôi."} align={"left"} />
@@ -78,7 +80,7 @@ const MyBooking = () => {
 
 
                  {
-                bookings.map((booking) => (
+                booking.map((booking) => (
                     <div key={booking._id} className='grid grid-cols-1 md:grid-cols-[3fr_2fr_1fr] w-full border-b border-gray-300 py-6 first:border-t'>
 
                         <div className='flex flex-col md:flex-row'>
