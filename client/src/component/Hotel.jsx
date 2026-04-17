@@ -8,14 +8,14 @@ const Hotel = ({room, index, key}) => {
   console.log(index % 2 ===0)
   return (
     <Link to={'/rooms/' + room._id} onClick={()=>{scrollTo(0, 0)} }>
-        <img src={room.images[0]} alt='hotel room' className='relative max-w-70 w-full rounded-xl overflow-hidden bg-white text-gray-400/90 shadow-[0px_4px_4px_rgba(0,0,0,0,0,5)]'/>
+        <img src={`http://localhost:4000/images/${room.images[0]}`} alt='hotel room' className='relative max-w-70 w-full rounded-xl overflow-hidden bg-white text-gray-400/90 shadow-[0px_4px_4px_rgba(0,0,0,0,0,5)]'/>
        
 
         <div className='p-4 pt-5'>
 
             <div className='flex items-center justify-between'>
 
-                <p className='text-xl font-medium text-gray-600' >{room.hotel.name}</p>
+                <p className='text-xl font-medium text-gray-600' >{room.hotel.hotelName}</p>
                 <div className='flex items-center gap-1'>
                   <img src={startIcon} className='w-4 h-4' alt='star-icon'/> 4.5
                 </div>
@@ -24,7 +24,7 @@ const Hotel = ({room, index, key}) => {
             <div className='flex items-center gap-1 text-sm'>
                 <img src={locationIcon} className='w-4 h-4' alt='locationIcon'/>
 
-                <span>{room.hotel.address}</span>
+                <span>{room.hotel.hotelAddress}</span>
             </div>
 
             <div className='flex itmes-center gap-1 justify-between mt-4'>

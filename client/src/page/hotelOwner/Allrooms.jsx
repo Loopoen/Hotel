@@ -1,10 +1,49 @@
 import { AppWindowMac, MapIcon, Star } from 'lucide-react'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContext'
+import toast from 'react-hot-toast'
 
 const AllRooms = () => {
-    const {roomData, navigate} = useContext(AppContext)
-    console.log(roomData)
+    const { navigate, axios} = useContext(AppContext)
+
+
+    const [roomData, setRoomData] = useState([])
+
+    const fetchOwnerRooms = async ()=>{
+        try{
+            const {data} = await axios.get("/api/room/get")
+            if(data.success){
+                setRoomData(data.rooms)
+
+            }else{
+                toast.error(data.message)
+            }
+        }
+        catch(error){
+            toast.error(error.message)
+        }
+    }
+
+
+    const deleteRoom = async(id) =>{
+        try{
+            const {data} = await axios.delete("/api/room/delete/" + id )
+
+            if(data.success){
+                toast.success(data.message)
+                fetchOwnerRooms()
+            }else{
+                toast.error(data.message)
+            }
+        }
+        catch(err){
+            toast.error(err.message)
+        }
+    }
+
+    useEffect(()=>{
+        fetchOwnerRooms()
+    }, [])
   return (
     <div className='min-h-screen w-full bg-gradient-to-br from-blue-50 to-indigo-300 p-6'>
         <div className='max-w-7xl mx-auto '>
@@ -13,7 +52,7 @@ const AllRooms = () => {
 
                 <p className='text-gray-600 ml-3 text-sm'>Manage your rooms here</p>
 
-                <button className='bg-primary ml-3 text-white px-6 py-1 rounded-md cursor-pointer' onClick={()=>navigate("/owner/register-hotel")}>Register Hotel</button>
+                <button className='bg-primary ml-3 text-white px-6 py-1 rounded-md cursor-pointer' onClick={()=>navigate("/owner/add-room")}>Add New Room</button>
 
             </div>
 
@@ -60,14 +99,14 @@ const AllRooms = () => {
                                             <td className='px-6 py-6 flex items-center space-x-5 '>
                                                 <div >
                                                 <div>
-                                                    <img src={item.images[0]} className='w-20 h-16 rounded-xl object-cover shadow-md'/>
+                                                    <img src={`http://localhost:4000/images/${item.images[0]}`} className='w-20 h-16 rounded-xl object-cover shadow-md'/>
                                                 </div>
 
                                               
 
                                                 <div>
                                                     <h3 className='text-lg mt-1 text-gray-800 '>
-                                                        {item.hotel.name}
+                                                        {item.hotel.hotelName}
                                                     </h3>                                            
                                                 </div>
 
@@ -94,7 +133,7 @@ const AllRooms = () => {
                                                  
 
                                                     <span className='text-gray-600 text-sm leading-relaxed'>
-                                                        {item.hotel.address}
+                                                        {item.hotel.hotelAddress}
                                                     </span>
                                                 </div>
                                             </td>
@@ -114,7 +153,7 @@ const AllRooms = () => {
                                              
                                                     
                                                     <span className='text-gray-600 text-sm leading-relaxed'>
-                                                        {item.hotel.price}
+                                                        {item.pricePerNight}
                                                     </span>
                                                 </div>
                                             </td>
@@ -125,7 +164,7 @@ const AllRooms = () => {
                                               <td>
                                                 <div className='py-6 px-6'>
                                                     {
-                                                        item.hotel.amenities.slice(0,3).map((amentity, index)=>(
+                                                        item.hotel.amenities.split(",").map((amentity, index)=>(
                                                             <span key={index} className='px-2 py-1 ml-1 bg-blue-100 text-blue text-xs rounded-full'>
                                                                 {amentity}
                                                             </span>
@@ -139,7 +178,7 @@ const AllRooms = () => {
 
                                          
                                             <td>
-                                                <button className='bg-red-300 text-white py-1 px-4 rounded-full cursor-pointer'>
+                                                <button onClick={()=>deleteRoom(item._id)} className='bg-red-300 text-white py-1 px-4 rounded-full cursor-pointer'>
                                                     Delete
                                                 </button>
                                             </td>

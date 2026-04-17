@@ -21,7 +21,7 @@ const BookingIcon = () => {
 
 const Navbar = () => {
 
-    const { navigate, user, setUser } = useContext(AppContext)
+    const { navigate, user, setUser, axios } = useContext(AppContext)
     const navLinks = [
         { name: 'Home', path: '/' },
         { name: 'Hotels', path: '/rooms' },
@@ -39,8 +39,20 @@ const Navbar = () => {
     const location = useLocation()
 
     const logout = async()=>{
-        setUser(false)
-        toast.success("logout thanh cong")
+        try{
+            const {data} = await axios.get("/api/user/logout")
+
+            if(data.success){
+                toast.success(data.message)
+                setUser(false)
+                navigate("/")
+            }else{
+                toast.error(data.message)    
+            }
+        }
+        catch(err){ 
+            toast.error(err.response.data.message)
+        }
     }
 
     useEffect(() => {
@@ -79,9 +91,7 @@ const Navbar = () => {
                         <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
                     </a>
                 ))}
-                <button onClick={() => navigate("/owner")} className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
-                    DashBoard
-                </button>
+             
             </div>
 
             {/* Desktop Right */}

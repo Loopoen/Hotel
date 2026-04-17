@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import RegImage from "../assets/RegImage.jpeg"
 import CloseIcon from "../assets/closeIcon.svg"
 import { cities } from './Hero'
+import { AppContext } from '../context/AppContext'
 
 const HotelRegistration = () => {
+
+  
     return (
         <div className='fixed top-0 bottom-0 left-0 right-0 z-100 flex items-center justify-center bg-black/90'>
 

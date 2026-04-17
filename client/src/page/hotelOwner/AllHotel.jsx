@@ -1,9 +1,50 @@
 import { AppWindowMac, MapIcon, Star } from 'lucide-react'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContext'
+import toast from 'react-hot-toast'
 
 const AllHotel = () => {
-    const {hotelData, navigate} = useContext(AppContext)
+    const {navigate, axios} = useContext(AppContext)
+    const [hotelData, setHotelData] = useState([])
+
+
+    const fetchOwnerHotel = async()=>{
+        try{
+            const {data} = await axios.get("/api/hotel/get")
+
+            if(data.success){
+                setHotelData(data.hotels)
+            }
+            else{
+                toast.error(data.message)
+            }
+        }
+        catch(error){
+            toast.error(error.message)
+        }
+    }
+
+    const deleteHotel = async (id)=>{
+        try{
+            const {data} = await axios.delete(`/api/hotel/delete/${id}`)
+            if(data.success){
+                toast.success(data.message)
+                fetchOwnerHotel()
+            }
+            else{
+                toast.error(data.message)
+            }
+        }
+        catch(error){
+            toast.error(error.message)
+        }
+    }
+
+    useEffect(()=>{
+        fetchOwnerHotel()
+    }, [])
+
+
     console.log(hotelData)
   return (
     <div className='min-h-screen w-full bg-gradient-to-br from-blue-50 to-indigo-300 p-6'>
@@ -59,18 +100,18 @@ const AllHotel = () => {
                         <tbody className='divide-y divide-gray-100 '>
                             {
                                 hotelData.map((item, index)=>(
-                                    <tr key={item.id} className={`hover:bg-blue-100 transition-all duration-200 ${index % 2=== 0 ? "bg-white": "bg-gray-50"}`}>
+                                    <tr key={item._id} className={`hover:bg-blue-100 transition-all duration-200 ${index % 2=== 0 ? "bg-white": "bg-gray-50"}`}>
                                             <td className='px-6 py-6 flex items-center space-x-5 '>
                                                 <div >
                                                 <div>
-                                                    <img src={item.image} className='w-20 h-16 rounded-xl object-cover shadow-md'/>
+                                                    <img src={`http://localhost:4000/images/${item.image}`} className='w-20 h-16 rounded-xl object-cover shadow-md'/>
                                                 </div>
 
                                               
 
                                                 <div>
                                                     <h3 className='text-lg mt-1 text-gray-800 '>
-                                                        {item.name}
+                                                        {item.hotelName}
                                                     </h3>                                            
                                                 </div>
 
@@ -84,7 +125,7 @@ const AllHotel = () => {
                                                     <MapIcon className='w-4 h-4 text-gray-400 mt-1 flex-shrink-0 '/>
 
                                                     <span className='text-gray-600 text-sm leading-relaxed'>
-                                                        {item.address}
+                                                        {item.hotelAddress}
                                                     </span>
                                                 </div>
                                             </td>
@@ -94,7 +135,7 @@ const AllHotel = () => {
                                                  
 
                                                     <span className='text-gray-600 text-sm leading-relaxed'>
-                                                        {item.ownerName}
+                                                        {item.owner.name}
                                                     </span>
                                                 </div>
                                             </td>
@@ -132,7 +173,7 @@ const AllHotel = () => {
                                             <td>
                                                 <div className='py-6 px-6'>
                                                     {
-                                                        item.amenities.slice(0,3).map((amentity, index)=>(
+                                                        item.amenities.split(",").map((amentity, index)=>(
                                                             <span key={index} className='px-2 py-1 ml-1 bg-blue-100 text-blue text-xs rounded-full'>
                                                                 {amentity}
                                                             </span>
@@ -142,7 +183,7 @@ const AllHotel = () => {
                                             </td>
 
                                             <td>
-                                                <button className='bg-red-300 text-white py-1 px-4 rounded-full cursor-pointer'>
+                                                <button onClick={()=>deleteHotel(item._id)} className='bg-red-300 text-white py-1 px-4 rounded-full cursor-pointer'>
                                                     Delete
                                                 </button>
                                             </td>

@@ -5,7 +5,7 @@ import {toast} from "react-hot-toast"
 
 export const Login = () => {
 
-    const {user, setUser, navigate, setOwner} = useContext(AppContext)
+    const {user, setUser, navigate, setOwner, axios} = useContext(AppContext)
 
     const [formData, setFormData] = useState({
         name: "",
@@ -18,12 +18,31 @@ export const Login = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = async(e) => {
         e.preventDefault()
-        toast.success("login thanh cong")
-        setUser(true)
-        setOwner(true)
-        navigate("/")
+
+        try{
+            const {data} = await axios.post("/api/user/login", formData)
+            if(data.success){
+                toast.success(data.message)
+                if(data.user.role === "owner"){
+                    setOwner(true)
+                    navigate("/owner")
+                }else{
+                    setUser(true)
+                    navigate("/")
+                }
+            }else{
+                toast.error(data.message)
+            }
+
+        }
+        catch(err){
+            toast.error(err.repsonse.data.message)   
+        }
+
+
+       
         console.log(formData)
     }
     return (

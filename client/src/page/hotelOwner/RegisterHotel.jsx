@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const RegisterHotel = () => {
     const [data, setData] = useState({
@@ -28,6 +30,8 @@ const RegisterHotel = () => {
         }
     }
 
+    const {axios, navigate} = useContext(AppContext)
+
     const handleSubmit = async(e)=>{
         e.preventDefault()
 
@@ -37,8 +41,24 @@ const RegisterHotel = () => {
         formData.append("hotelAddress", data.hotelAddress)
         formData.append("price", data.price)
         formData.append("rating", data.rating)
-        formData.append("amentities", data.amentities)
+        formData.append("amenities", data.amentities)
         formData.append("image", data.image)
+
+        try{
+            const {data} = await axios.post("/api/hotel/register", formData)
+
+            if(data.success){
+                toast.success(data.message)
+                navigate("/owner")
+            }
+            else{
+                toast.error(data.message)
+            }
+            
+        }
+        catch(err){
+            toast.error(err.message)
+        }
 
         console.log(data)
     }

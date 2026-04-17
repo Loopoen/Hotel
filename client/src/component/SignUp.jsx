@@ -1,21 +1,40 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { User } from "lucide-react"
+import { AppContext } from '../context/AppContext'
+import toast from 'react-hot-toast'
 
 export const Signup = () => {
+
+    const {axios, navigate} = useContext(AppContext)
 
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        password: ""
+        password: "",
+        role:""
     })
 
     const onChangeHandler = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = async(e) => {
         e.preventDefault()
+
+        try{
+            const {data} = await axios.post("/api/user/signup", formData)
+
+            if(data.success){
+                toast.success("dang ky thanh cong")
+                navigate("/login")
+            }else{
+                toast.error(data.message)
+            }
+        }
+        catch(error){
+            toast.error(error.response.data.message)
+        }
 
         console.log(formData)
     }
@@ -41,8 +60,17 @@ export const Signup = () => {
                 </div>
 
 
+                <div className='flex items-center w-full mt-4 bg-white border h-10  border-gray-300/80 rounded-full overflow-hidden pl-6 gap-2 '>
+                        <select name='role' onChange={onChangeHandler} value={formData.role} className='bg-transparent text-gray-500 placeholder-gray-500 outline-none h-full w-full text-base'>
+                            <option value={""}>Select role</option>
+                             <option value={"user"}>User</option>
+                              <option value={"owner"}>Owner</option>
+                        </select>
+                </div>
 
-                <div class="flex items-center mt-4 w-full mt-5 bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
+
+
+                <div class="flex items-center mt-4 w-full  bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
                     <svg width="13" height="17" viewBox="0 0 13 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13 8.5c0-.938-.729-1.7-1.625-1.7h-.812V4.25C10.563 1.907 8.74 0 6.5 0S2.438 1.907 2.438 4.25V6.8h-.813C.729 6.8 0 7.562 0 8.5v6.8c0 .938.729 1.7 1.625 1.7h9.75c.896 0 1.625-.762 1.625-1.7zM4.063 4.25c0-1.406 1.093-2.55 2.437-2.55s2.438 1.144 2.438 2.55V6.8H4.061z" fill="#6B7280" />
                     </svg>

@@ -96,12 +96,12 @@ const AllRooms = () => {
                 {
                     roomData.map((room) => (
                         <div className='flex flex-col md:flex-row items-start py-10 gap-6 border-b border-gray-200 last:pb-30 last:border-0'>
-                            <img onClick={() => navigate(`/rooms/${room._id}`)} src={room.images[0]} className='w-85 h-40 rounded-2xl shadow-lg object-cover cursor-pointer' />
+                            <img onClick={() => navigate(`/rooms/${room._id}`)} src={`http://localhost:4000/images/${room.images[0]}`} className='w-85 h-40 rounded-2xl shadow-lg object-cover cursor-pointer' />
 
                             <div className='flex flex-col gap-2 md:w-1/2'>
 
-                                <p className='text-gray-500'>{room.hotel.city}</p>
-                                <p className='text-gray-800 text-3xl cursor-pointer w-60'>{room.hotel.name}</p>
+                                <p className='text-gray-500'>{room.hotel.hotelAddress}</p>
+                                <p className='text-gray-800 text-3xl cursor-pointer w-60'>{room.hotel.hotelName}</p>
                                 <div className='flex items-center'>
 
                                     <StarRating />
@@ -111,13 +111,13 @@ const AllRooms = () => {
                                 <div className='flex items-center gap-1 text-gray-500 mt-2 text-sm'>
 
                                     <img src={locationIcon} className='w-6 h-6' />
-                                    <span>{room.hotel.address}</span>
+                                    <span>{room.hotel.hotelAddress}</span>
                                 </div>
 
                                 <div className='flex flex-wrap items-center mt-3 mb-5 gap-4'>
                                     {
 
-                                        room.amenities.map((item, index) => (
+                                        room.amenities.split(",").map((item, index) => (
                                             <div className='flex items-center gap-2 px-3 py-2 rounded-lg bg-[#F5F5FF]/50'>
 
                                                 <img src={facilityIcons[item]} className='w-5 h-5' alt={item} />
@@ -136,7 +136,7 @@ const AllRooms = () => {
                     ))}
             </div>
 
-            <div className='absolute top-30 right-30'>
+            {/* <div className='absolute top-30 right-30'>
                 <div className='bg-white w-80 border border-gray-300 text-gray-600 max-lg:mb-8 min-lg:mt-10'>
 
                     <div className={`flex items-center justify-between px-5 py-2.5 min-lg:border-b border-gray-200 ${openFilter && "border-b"}`}>
@@ -199,7 +199,7 @@ const AllRooms = () => {
                    
                 </div>
 
-            </div>
+            </div> */}
         </div>
 
 
