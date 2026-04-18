@@ -69,8 +69,8 @@ const RoomDetal = () => {
             }else{
                 const {data} = await axios.post("/api/bookings/book",{
                     room:room._id,
-                    checkIn:bookingData.checkIn,
-                    checkOut:bookingData.checkOut,
+                    checkInDate:bookingData.checkIn,
+                    checkOutDate:bookingData.checkOut,
                     person:bookingData.person,
                     paymentMethod:"Pay At Hotel"
                 })

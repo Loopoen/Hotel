@@ -4,6 +4,8 @@ import { hotelDummyData, roomsDummyData, userDummyData } from '../component/Feat
 import locationIcon from "../assets/land-layer-location.svg"
 import guestIcon from "../assets/user.svg"
 import { AppContext } from '../context/AppContext'
+import { useEffect } from 'react'
+import toast from 'react-hot-toast'
 
 
 
@@ -61,8 +63,48 @@ export const userBookingsDummyData = [
 
 
 const MyBooking = () => {
-    const {booking} = useContext(AppContext)
-    console.log(booking)
+    const {axios} = useContext(AppContext)
+
+
+     
+        const [booking, setBookings] = useState([])
+
+        const handlePayment = async (bookingId)=>{
+            try{
+                const {data} = await axios.post("/api/bookings/stripe-payment", {bookingId})
+                if(data.success){
+                    window.location.href=data.url
+                    toast.success(data.meesage)
+                }else{
+                    toast.success(data.error)
+                }
+            }
+            catch(error){
+                toast.error(error.meesage)
+            }
+        }
+
+        const fetchBooking = async()=>{
+            try{
+                const {data} = await axios.get("/api/bookings/user")
+                if(data.success){
+                    toast.success(data.message)
+                    setBookings(data.bookings)
+                 
+                }else{
+                    toast.error(data.message)
+                }
+            }catch(err){
+                toast.error(err.meesage)
+            }
+        }
+
+        useEffect(()=>{
+            fetchBooking()
+        }, [])
+
+           
+    console.log(booking.room)
 
     return (
         <div className='py-28 md:pt-32 px-4 md;px-16 lg:px-24 xl:px-32'>
@@ -84,21 +126,21 @@ const MyBooking = () => {
                     <div key={booking._id} className='grid grid-cols-1 md:grid-cols-[3fr_2fr_1fr] w-full border-b border-gray-300 py-6 first:border-t'>
 
                         <div className='flex flex-col md:flex-row'>
-                            <img src={booking.room.images[0]} className='min-md:w-44 rounded shadow object-cover' />
+                            <img src={`http://localhost:4000/images/${booking.room.images[0]}`} className='min-md:w-44 rounded shadow object-cover' />
                             <div className='flex flex-col gap-2 max-md:mt-3  ml-5'>
-                                <p className='text-xl'>{booking.hotel.name}
+                                <p className='text-xl'>{booking.hotel.hotelName}
 
                                     <span className='font-inter text-sm ml-2'>{booking.room.roomType}</span>
                                 </p>
 
                                 <div className='flex items-center gap-1 text-sm text-gray-800'>
                                     <img src={locationIcon} className=' w-5 h-5 '/>
-                                    <span>{booking.hotel.address}</span>
+                                    <span>{booking.hotel.hotelAddress}</span>
                                 </div>
 
                                      <div className='flex items-center gap-1 text-sm text-gray-800'>
                                     <img src={guestIcon} className=' w-5 h-5 '/>
-                                    <span>Guests: {booking.guests}</span>
+                                    <span>Guests: {booking.person}</span>
                                 </div>
                                 <p>Total: ${booking.totalPrice}</p>
                                 
@@ -109,13 +151,13 @@ const MyBooking = () => {
                             <div>
 
                                 <p>Check-In:</p>
-                                 <p className='text-gray-500'>{new Date(booking.checkInDate).toDateString()}</p>
+                                 <p className='text-gray-500'>{new Date(booking.checkIn).toDateString()}</p>
                             </div>
 
                                <div>
 
                                 <p>Check-Out:</p>
-                                <p className='text-gray-500'>{new Date(booking.checkOutDate).toDateString()}</p>
+                                <p className='text-gray-500'>{new Date(booking.checkOut).toDateString()}</p>
                             </div>
                         </div>
 
@@ -124,14 +166,14 @@ const MyBooking = () => {
                                 <div className={`h-3 w-3 rounded-full ${booking.isPaid ? "bg-green-500": "bg-red-500"}`}>
                                 </div>
                                 <p className={`text-sm ${booking.isPaid ? "text-green-500": "text-red-500"}`}>
-                                    {booking.isPaid ? "Paid": "Unpaid"}
+                                    {booking.status}
                                 </p>
                             </div>
 
                             {
                                 !booking.isPaid && (
-                                    <button className='px-5 py-2 mt-4 text-xs border border-gray-400 rounded-full hover:bg-gray-500 transition-all cursor-pointer'>
-                                        Pay Now
+                                    <button onClick={()=>handlePayment(booking._id)} className='px-5 py-2 mt-4 text-xs border border-gray-400 rounded-full hover:bg-gray-500 transition-all cursor-pointer'>
+                                        {booking.isPaid ? "Paid": "Pay Now"}
                                     </button>
                                 )
                             }

@@ -1,16 +1,44 @@
     import React, { useContext, useState } from 'react'
     import Title from '../../component/Title'
-    import { hotelDummyData, roomsDummyData, userDummyData } from '../../component/FeatureDestination'
+
     import locationIcon from "../../assets/land-layer-location.svg"
     import guestIcon from "../../assets/user.svg"
     import { AppContext } from '../../context/AppContext'
     import { CheckCircle, Clock, Trash2, XCircle } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { useEffect } from 'react'
 
 
 
 
     const MyBooking = () => {
-        const { booking } = useContext(AppContext)
+       const {axios} = useContext(AppContext)
+
+
+            
+        const [booking, setBookings] = useState([])
+
+        const fetchBooking = async()=>{
+            try{
+                const {data} = await axios.get("/api/bookings/hotel")
+                if(data.success){
+                    toast.success(data.message)
+                    setBookings(data.bookings)
+                 
+                }else{
+                    toast.error(data.message)
+                }
+            }catch(err){
+                toast.error(err.meesage)
+            }
+        }
+
+        useEffect(()=>{
+            fetchBooking()
+        }, [])
+
+           
+
         console.log(booking)
 
         const getStatusColor = (status) => {
@@ -80,9 +108,9 @@
                              return<div key={booking._id} className='grid grid-cols-1 md:grid-cols-[3fr_2fr_1fr_1fr] w-full border-b border-gray-300 py-6 first:border-t'>
 
                                 <div className='flex flex-col md:flex-row'>
-                                    <img src={booking.room.images[0]} className='min-md:w-44 rounded shadow object-cover' />
+                                    <img src={`http://localhost:4000/images/${booking.room.images[0]}`} className='min-md:w-44 rounded shadow object-cover' />
                                     <div className='flex flex-col gap-2 max-md:mt-3  ml-5'>
-                                        <p className='text-xl'>{booking.hotel.name}
+                                        <p className='text-xl'>{booking.hotel.hotelName}
 
                                             <span className='font-inter text-sm ml-2'>{booking.room.roomType}</span>
                                         </p>
@@ -94,7 +122,7 @@
 
                                         <div className='flex items-center gap-1 text-sm text-gray-800'>
                                             <img src={guestIcon} className=' w-5 h-5 ' />
-                                            <span>Guests: {booking.guests}</span>
+                                            <span>Guests: {booking.person}</span>
                                         </div>
                                         <p>Total: ${booking.totalPrice}</p>
 
@@ -105,13 +133,13 @@
                                     <div>
 
                                         <p>Check-In:</p>
-                                        <p className='text-gray-500'>{new Date(booking.checkInDate).toDateString()}</p>
+                                        <p className='text-gray-500'>{new Date(booking.checkIn).toDateString()}</p>
                                     </div>
 
                                     <div>
 
                                         <p>Check-Out:</p>
-                                        <p className='text-gray-500'>{new Date(booking.checkOutDate).toDateString()}</p>
+                                        <p className='text-gray-500'>{new Date(booking.checkOut).toDateString()}</p>
                                     </div>
                                 </div>
 
